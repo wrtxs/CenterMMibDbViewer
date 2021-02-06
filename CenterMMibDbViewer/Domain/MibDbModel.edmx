@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MibDb.Store" Provider="Npgsql" ProviderManifestToken="9.6.10" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'a7u-mib-transport.public.header' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="header">
+          <Key>
+            <PropertyRef Name="value" />
+          </Key>
+          <Property Name="header" Type="varchar" MaxLength="255" />
+          <Property Name="value" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="packet_suid" Type="int8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6005: The data type 'oid' is currently not supported for the target Entity Framework version; the column 'payload' in the table 'a7u-mib-transport.public.in_packet' was excluded.-->
+        <EntityType Name="in_packet">
+          <Key>
+            <PropertyRef Name="suid" />
+          </Key>
+          <Property Name="suid" Type="int8" Nullable="false" />
+          <Property Name="sender" Type="varchar" MaxLength="200" />
+          <Property Name="meta" Type="text" />
+          <Property Name="received" Type="timestamp" />
+          <Property Name="processed" Type="timestamp" />
+          <Property Name="secrecy" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6005: The data type 'oid' is currently not supported for the target Entity Framework version; the column 'payload' in the table 'a7u-mib-transport.public.out_packet' was excluded.-->
+        <EntityType Name="out_packet">
+          <Key>
+            <PropertyRef Name="suid" />
+          </Key>
+          <Property Name="suid" Type="int8" Nullable="false" />
+          <Property Name="msa_id" Type="uuid" Nullable="false" />
+          <Property Name="created" Type="timestamp" Nullable="false" />
+          <Property Name="mib_id" Type="uuid" />
+          <Property Name="meta" Type="text" />
+          <Property Name="priority" Type="int4" />
+          <Property Name="secrecy" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'a7u-mib-transport.public.upd_history' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="upd_history">
+          <Key>
+            <PropertyRef Name="suid" />
+            <PropertyRef Name="db_name" />
+            <PropertyRef Name="upd_name" />
+            <PropertyRef Name="is_comitted" />
+            <PropertyRef Name="commit_date" />
+          </Key>
+          <Property Name="suid" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="db_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="upd_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="is_comitted" Type="bool" Nullable="false" />
+          <Property Name="commit_date" Type="timestamp" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MibDbStoreContainer">
+          <EntitySet Name="in_packet" EntityType="Self.in_packet" Schema="public" store:Type="Tables" />
+          <EntitySet Name="out_packet" EntityType="Self.out_packet" Schema="public" store:Type="Tables" />
+          <EntitySet Name="header" EntityType="Self.header" store:Type="Tables" store:Schema="public">
+            <DefiningQuery>SELECT "header"."header", "header"."value", "header"."packet_suid" FROM "public"."header" AS "header"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="upd_history" EntityType="Self.upd_history" store:Type="Tables" store:Schema="public">
+            <DefiningQuery>SELECT "upd_history"."suid", "upd_history"."db_name", "upd_history"."upd_name", "upd_history"."is_comitted", "upd_history"."commit_date" FROM "public"."upd_history" AS "upd_history"</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MibDb" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="in_packet">
+          <Key>
+            <PropertyRef Name="suid" />
+          </Key>
+          <Property Name="suid" Type="Int64" Nullable="false" />
+          <Property Name="sender" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="meta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="received" Type="DateTime" Precision="6" />
+          <Property Name="processed" Type="DateTime" Precision="6" />
+			<Property Name="secrecy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="out_packet">
+          <Key>
+            <PropertyRef Name="suid" />
+          </Key>
+          <Property Name="suid" Type="Int64" Nullable="false" />
+          <Property Name="msa_id" Type="Guid" Nullable="false" />
+          <Property Name="created" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="mib_id" Type="Guid" />
+          <Property Name="meta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="priority" Type="Int32" />
+          <Property Name="secrecy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="header">
+          <Key>
+            <PropertyRef Name="value" />
+          </Key>
+          <Property Name="header1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="value" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="packet_suid" Type="Int64" />
+        </EntityType>
+        <EntityType Name="upd_history">
+          <Key>
+            <PropertyRef Name="suid" />
+            <PropertyRef Name="db_name" />
+            <PropertyRef Name="upd_name" />
+            <PropertyRef Name="is_comitted" />
+            <PropertyRef Name="commit_date" />
+          </Key>
+          <Property Name="suid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="db_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="upd_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="is_comitted" Type="Boolean" Nullable="false" />
+          <Property Name="commit_date" Type="DateTime" Precision="6" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MibDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="in_packet" EntityType="Self.in_packet" />
+          <EntitySet Name="out_packet" EntityType="Self.out_packet" />
+          <EntitySet Name="headers" EntityType="Self.header" />
+          <EntitySet Name="upd_history" EntityType="Self.upd_history" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MibDbStoreContainer" CdmEntityContainer="MibDbContext">
+          <EntitySetMapping Name="in_packet">
+            <EntityTypeMapping TypeName="MibDb.in_packet">
+              <MappingFragment StoreEntitySet="in_packet">
+                <ScalarProperty Name="suid" ColumnName="suid" />
+                <ScalarProperty Name="sender" ColumnName="sender" />
+                <ScalarProperty Name="meta" ColumnName="meta" />
+                <ScalarProperty Name="received" ColumnName="received" />
+                <ScalarProperty Name="processed" ColumnName="processed" />
+                <ScalarProperty Name="secrecy" ColumnName="secrecy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="out_packet">
+            <EntityTypeMapping TypeName="MibDb.out_packet">
+              <MappingFragment StoreEntitySet="out_packet">
+                <ScalarProperty Name="suid" ColumnName="suid" />
+                <ScalarProperty Name="msa_id" ColumnName="msa_id" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="mib_id" ColumnName="mib_id" />
+                <ScalarProperty Name="meta" ColumnName="meta" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="secrecy" ColumnName="secrecy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="headers">
+            <EntityTypeMapping TypeName="MibDb.header">
+              <MappingFragment StoreEntitySet="header">
+                <ScalarProperty Name="header1" ColumnName="header" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="packet_suid" ColumnName="packet_suid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="upd_history">
+            <EntityTypeMapping TypeName="MibDb.upd_history">
+              <MappingFragment StoreEntitySet="upd_history">
+                <ScalarProperty Name="suid" ColumnName="suid" />
+                <ScalarProperty Name="db_name" ColumnName="db_name" />
+                <ScalarProperty Name="upd_name" ColumnName="upd_name" />
+                <ScalarProperty Name="is_comitted" ColumnName="is_comitted" />
+                <ScalarProperty Name="commit_date" ColumnName="commit_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
