@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using CenterMMibDbViewer.Domain;
 
-namespace CenterMMibDbViewer
+namespace CenterMMibDbViewer.Services
 {
     internal class MainService
     {

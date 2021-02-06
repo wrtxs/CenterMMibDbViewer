@@ -1,4 +1,6 @@
-﻿namespace CenterMMibDbViewer.Views
+﻿using CenterMMibDbViewer.Domain;
+
+namespace CenterMMibDbViewer.Views
 {
     partial class MainForm
     {
@@ -161,7 +163,7 @@
             // 
             // bsInPacketData
             // 
-            this.bsInPacketData.DataSource = typeof(CenterMMibDbViewer.Row);
+            this.bsInPacketData.DataSource = typeof(Row);
             // 
             // gridInPacketData
             // 
